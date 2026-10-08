@@ -1,0 +1,1990 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Adaptify Settings - Document Templates Prototype</title>
+  <style>
+    :root {
+      --cyan:#0bbdd6;
+      --cyan-d:#0a9fc0;
+      --cyan-dd:#0883a0;
+      --cyan-bg:#e6f7fb;
+      --cyan-bg2:#f0fbfd;
+      --bg:#f4f8fb;
+      --panel:#ffffff;
+      --panel-sunken:#f3f7fa;
+      --panel-tint:#fbfdfe;
+      --ink:#142733;
+      --ink-2:#3f5666;
+      --ink-3:#6b8294;
+      --ink-4:#9bb0bf;
+      --line:#e4ecf1;
+      --line-2:#eef3f6;
+      --green:#16a34a;
+      --green-bg:#dcfce7;
+      --amber:#b45309;
+      --amber-bg:#fef3c7;
+      --slate:#64748b;
+      --slate-bg:#eef2f6;
+      --violet:#6d4ed6;
+      --violet-bg:#ede9fd;
+      --blue:#2563eb;
+      --blue-bg:#e0edff;
+      --rose:#be123c;
+      --rose-bg:#ffe4e6;
+      --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+      --font-mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      --fs-h1:24px;
+      --fs-h2:18px;
+      --fs-h3:15px;
+      --fs-body:14px;
+      --fs-sm:13px;
+      --fs-meta:12px;
+      --fs-label:11px;
+      --fw-medium:500;
+      --fw-semibold:600;
+      --fw-bold:700;
+      --lh-body:1.5;
+      --ls-label:.4px;
+      --sp-1:4px;
+      --sp-2:8px;
+      --sp-3:12px;
+      --sp-4:16px;
+      --sp-5:22px;
+      --sp-6:30px;
+      --radius:14px;
+      --radius-shell:16px;
+      --radius-md:12px;
+      --radius-btn:10px;
+      --radius-btn-sm:8px;
+      --radius-chip:9px;
+      --radius-pill:999px;
+      --shadow:0 1px 2px rgba(20,39,51,.04), 0 8px 24px -16px rgba(20,39,51,.18);
+      --shadow-sm:0 1px 2px rgba(20,39,51,.05);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+    }
+    button, input, select, textarea { font: inherit; }
+    textarea.control { min-height: 78px; resize: vertical; }
+    .app { display: grid; grid-template-columns: 250px minmax(0, 1fr); min-height: 100vh; }
+    .sidebar {
+      background: var(--panel);
+      border-right: 1px solid var(--line);
+      padding: var(--sp-5) var(--sp-4);
+    }
+    .brand { display: flex; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-6); }
+    .brand-mark {
+      align-items: center;
+      background: var(--cyan-bg);
+      border: 1px solid rgba(11,189,214,.25);
+      border-radius: var(--radius-md);
+      color: var(--cyan-dd);
+      display: flex;
+      font-weight: var(--fw-bold);
+      height: 38px;
+      justify-content: center;
+      width: 38px;
+    }
+    .brand-name { font-size: var(--fs-h3); font-weight: var(--fw-semibold); }
+    .nav-section { margin-top: var(--sp-5); }
+    .nav-label {
+      color: var(--ink-3);
+      font-size: var(--fs-label);
+      font-weight: var(--fw-bold);
+      letter-spacing: var(--ls-label);
+      margin: 0 0 var(--sp-2);
+      text-transform: uppercase;
+    }
+    .nav-item {
+      border-radius: var(--radius-chip);
+      color: var(--ink-2);
+      display: flex;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-medium);
+      gap: var(--sp-2);
+      padding: 9px 10px;
+    }
+    .nav-item.active { background: var(--cyan-bg); color: var(--cyan-dd); }
+    .main { min-width: 0; padding: var(--sp-5) var(--sp-6); }
+    .ds-page { display: flex; flex-direction: column; gap: var(--sp-4); margin: 0 auto; max-width: 1240px; }
+    .breadcrumb { color: var(--ink-3); display: flex; font-size: var(--fs-sm); gap: var(--sp-2); }
+    .hero {
+      align-items: flex-start;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: var(--sp-4);
+      justify-content: space-between;
+      padding: var(--sp-5);
+    }
+    .hero h1 { font-size: var(--fs-h1); line-height: 1.2; margin: 0 0 var(--sp-1); }
+    .hero p { color: var(--ink-2); margin: 0; max-width: 680px; }
+    .hero [contenteditable="true"] {
+      border: 1px solid transparent;
+      border-radius: var(--radius-btn-sm);
+      outline: none;
+      padding: 2px 4px;
+    }
+    .hero [contenteditable="true"]:hover {
+      background: var(--panel-tint);
+      border-color: var(--line-2);
+    }
+    .hero [contenteditable="true"]:focus {
+      background: var(--panel);
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(11,189,214,.12);
+    }
+    .actions { align-items: center; display: flex; flex-wrap: wrap; gap: var(--sp-2); justify-content: flex-end; }
+    .btn {
+      align-items: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius-btn);
+      cursor: pointer;
+      display: inline-flex;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-semibold);
+      gap: 6px;
+      justify-content: center;
+      line-height: 18px;
+      min-height: 36px;
+      padding: 8px 13px;
+      white-space: nowrap;
+    }
+    .btn.small { min-height: 32px; padding: 6px 10px; }
+    .btn.primary { background: var(--cyan); color: var(--panel); }
+    .btn.primary:hover { background: var(--cyan-d); }
+    .btn.soft { background: var(--panel-sunken); border-color: var(--line); color: var(--ink); }
+    .btn.ghost { background: transparent; color: var(--ink-2); }
+    .btn.danger { background: var(--rose-bg); color: var(--rose); }
+    .gesture-tooltip {
+      background: var(--ink);
+      border-radius: var(--radius-btn-sm);
+      box-shadow: 0 8px 20px -14px rgba(20,39,51,.65);
+      color: var(--panel);
+      font-size: var(--fs-meta);
+      font-weight: var(--fw-medium);
+      left: 0;
+      line-height: 1.35;
+      max-width: 240px;
+      opacity: 0;
+      padding: 7px 9px;
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      transform: translate(-50%, -100%);
+      transition: opacity .12s ease;
+      white-space: normal;
+      z-index: 80;
+    }
+    .gesture-tooltip.visible { opacity: 1; }
+    .section-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+    .section-header {
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      gap: var(--sp-3);
+      justify-content: space-between;
+      min-height: 63px;
+      padding: 14px var(--sp-5);
+    }
+    .section-title { align-items: center; display: flex; gap: var(--sp-2); min-width: 0; }
+    .section-title h2 { font-size: var(--fs-h2); margin: 0; }
+    .count {
+      background: var(--slate-bg);
+      border-radius: var(--radius-pill);
+      color: var(--slate);
+      font-size: var(--fs-meta);
+      font-weight: var(--fw-semibold);
+      line-height: 1;
+      padding: 5px 8px;
+    }
+    .section-body { padding: var(--sp-5); }
+    .card-grid { display: grid; gap: var(--sp-4); grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .nav-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      cursor: pointer;
+      display: grid;
+      gap: var(--sp-3);
+      grid-template-columns: 40px minmax(0,1fr) auto;
+      min-height: 118px;
+      padding: var(--sp-4);
+      text-align: left;
+      width: 100%;
+    }
+    .nav-card:hover { border-color: rgba(11,189,214,.55); box-shadow: var(--shadow); }
+    .tile {
+      align-items: center;
+      background: var(--cyan-bg);
+      border-radius: var(--radius-md);
+      color: var(--cyan-dd);
+      display: flex;
+      font-weight: var(--fw-bold);
+      height: 40px;
+      justify-content: center;
+      width: 40px;
+    }
+    .tile.violet { background: var(--violet-bg); color: var(--violet); }
+    .tile.blue { background: var(--blue-bg); color: var(--blue); }
+    .tile.amber { background: var(--amber-bg); color: var(--amber); }
+    .nav-card h3 { font-size: var(--fs-h3); line-height: 1.25; margin: 0 0 var(--sp-1); }
+    .nav-card p { color: var(--ink-3); font-size: var(--fs-sm); line-height: 1.45; margin: 0; }
+    .chev { color: var(--ink-4); font-size: 22px; line-height: 1; }
+    .tabs {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-shell);
+      display: flex;
+      gap: var(--sp-1);
+      padding: var(--sp-2);
+      width: fit-content;
+    }
+    .tab {
+      background: transparent;
+      border: 0;
+      border-radius: var(--radius-chip);
+      color: var(--ink-2);
+      cursor: pointer;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-semibold);
+      padding: 8px 12px;
+    }
+    .tab.active { background: var(--cyan-bg); color: var(--cyan-dd); }
+    .filter-bar { align-items: end; display: grid; gap: var(--sp-3); grid-template-columns: minmax(240px, 1fr) 160px 160px auto; margin-bottom: var(--sp-4); }
+    .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+    label, .label {
+      color: var(--ink);
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-semibold);
+      line-height: 18px;
+    }
+    .control {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-btn);
+      color: var(--ink);
+      min-height: 36px;
+      padding: 8px 10px;
+      width: 100%;
+    }
+    .control:focus { border-color: var(--cyan); outline: 3px solid rgba(11,189,214,.14); }
+    table { border-collapse: collapse; width: 100%; }
+    th {
+      background: var(--cyan-bg2);
+      border-bottom: 1px solid var(--line);
+      color: var(--ink-3);
+      font-size: var(--fs-label);
+      font-weight: var(--fw-bold);
+      letter-spacing: var(--ls-label);
+      padding: 10px 12px;
+      text-align: left;
+      text-transform: uppercase;
+    }
+    td {
+      border-bottom: 1px solid var(--line-2);
+      color: var(--ink-2);
+      font-size: var(--fs-sm);
+      padding: 12px;
+      vertical-align: middle;
+    }
+    td strong { color: var(--ink); font-weight: var(--fw-semibold); }
+    .status {
+      border-radius: var(--radius-pill);
+      display: inline-flex;
+      font-size: var(--fs-meta);
+      font-weight: var(--fw-semibold);
+      line-height: 1;
+      padding: 5px 8px;
+    }
+    .status.ready { background: var(--green-bg); color: var(--green); }
+    .status.draft { background: var(--amber-bg); color: var(--amber); }
+    .row-actions { display: flex; gap: 6px; justify-content: flex-end; }
+    .link-btn {
+      background: transparent;
+      border: 0;
+      color: var(--cyan-dd);
+      cursor: pointer;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-semibold);
+      padding: 0;
+    }
+    .editor-grid { display: block; }
+    .editor-pane { display: none; }
+    .details-panel {
+      background: var(--panel);
+      border-left: 1px solid var(--line);
+      box-shadow: -18px 0 38px -28px rgba(20,39,51,.45);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      margin-left: auto;
+      max-width: 560px;
+      min-width: 460px;
+      overflow: hidden;
+      width: 38vw;
+    }
+    .settings-drawer {
+      background: rgba(20,39,51,.22);
+      display: flex;
+      inset: 0;
+      justify-content: flex-end;
+      position: fixed;
+      z-index: 30;
+    }
+    .settings-drawer.hidden { display: none !important; }
+    .details-panel .section-header { flex-shrink: 0; }
+    .details-panel .section-body {
+      background: var(--panel-sunken);
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      gap: var(--sp-4);
+      min-height: 0;
+      overflow-y: auto;
+      padding: var(--sp-5);
+    }
+    .settings-section {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: var(--sp-4);
+    }
+    .settings-section h3 {
+      font-size: var(--fs-h3);
+      margin: 0 0 var(--sp-3);
+    }
+    .settings-section__note {
+      color: var(--ink-3);
+      font-size: var(--fs-sm);
+      margin: -4px 0 var(--sp-3);
+    }
+    .settings-section .form-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .settings-section .form-grid.full {
+      grid-template-columns: 1fr;
+    }
+    .settings-drawer__footer {
+      align-items: center;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-shrink: 0;
+      gap: var(--sp-2);
+      justify-content: flex-end;
+      padding: var(--sp-4) var(--sp-5);
+    }
+    .layout-settings {
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      display: grid;
+      gap: var(--sp-3);
+      grid-template-columns: 1fr;
+      margin: 0;
+      padding: 0;
+    }
+    .layout-settings__group {
+      background: transparent;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+    }
+    .layout-settings__group h4 {
+      font-size: var(--fs-h3);
+      margin: 0 0 var(--sp-3);
+    }
+    .subsection {
+      background: var(--panel-tint);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: var(--sp-4);
+    }
+    .subsection h3 { font-size: var(--fs-h3); margin: 0 0 var(--sp-3); }
+    .form-grid { display: grid; gap: var(--sp-3); grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .form-grid.three { grid-template-columns: 1.2fr .8fr .8fr; }
+    .form-grid.full { grid-template-columns: 1fr; }
+    .hint { color: var(--ink-3); font-size: var(--fs-sm); line-height: 1.45; margin: 0; }
+    .checkbox-row { align-items: center; display: flex; gap: var(--sp-2); margin-top: var(--sp-3); }
+    .rows-list { display: flex; flex-direction: column; gap: var(--sp-2); }
+    .template-row {
+      align-items: end;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      display: grid;
+      gap: var(--sp-2);
+      grid-template-columns: minmax(120px, 1fr) 110px 110px 36px;
+      padding: var(--sp-3);
+    }
+    .icon-btn {
+      align-items: center;
+      background: transparent;
+      border: 0;
+      border-radius: var(--radius-btn-sm);
+      color: var(--ink-3);
+      cursor: pointer;
+      display: flex;
+      font-size: 18px;
+      height: 36px;
+      justify-content: center;
+      width: 36px;
+    }
+    .icon-btn:hover { background: var(--panel-sunken); color: var(--ink); }
+    .preview-shell {
+      background: var(--panel-sunken);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      min-width: 0;
+      padding: var(--sp-4);
+      position: sticky;
+      top: var(--sp-5);
+    }
+    .preview-toolbar {
+      align-items: center;
+      display: flex;
+      gap: var(--sp-3);
+      justify-content: space-between;
+      margin-bottom: var(--sp-3);
+    }
+    .settings-icon {
+      font-size: 17px;
+      line-height: 1;
+    }
+    .format-ribbon {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-bottom: var(--sp-3);
+      padding: var(--sp-2);
+    }
+    .ribbon-section {
+      align-items: stretch;
+      border-right: 1px solid var(--line-2);
+      flex-direction: column;
+      display: flex;
+      gap: var(--sp-1);
+      justify-content: space-between;
+      min-height: 86px;
+      padding: 0 var(--sp-3);
+    }
+    .ribbon-section:first-child { padding-left: 0; }
+    .ribbon-section:last-child { border-right: 0; padding-right: 0; }
+    .ribbon-controls {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-1);
+    }
+    .ribbon-controls--column {
+      align-items: stretch;
+      flex-direction: column;
+    }
+    .ribbon-label {
+      color: var(--ink-3);
+      font-size: var(--fs-label);
+      font-weight: var(--fw-medium);
+      letter-spacing: var(--ls-label);
+      line-height: 1;
+      text-align: center;
+      text-transform: uppercase;
+    }
+    .tool-group { display: flex; gap: var(--sp-1); }
+    .tool-btn {
+      align-items: center;
+      background: var(--panel-sunken);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-btn-sm);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      font-size: var(--fs-meta);
+      font-weight: var(--fw-medium);
+      height: 32px;
+      justify-content: center;
+      min-width: 32px;
+      padding: 0 9px;
+    }
+    .tool-btn.active { background: var(--cyan-bg); border-color: rgba(11,189,214,.55); color: var(--cyan-dd); }
+    .tool-btn.danger {
+      background: var(--rose-bg);
+      border-color: rgba(190,18,60,.35);
+      color: var(--rose);
+    }
+    .tool-btn.danger:hover,
+    .tool-btn.danger:focus-visible {
+      background: #ffd7dc;
+      border-color: rgba(190,18,60,.55);
+      color: var(--rose);
+    }
+    .icon-lines {
+      display: inline-grid;
+      gap: 2px;
+      width: 16px;
+    }
+    .icon-lines::before, .icon-lines::after, .icon-lines span {
+      background: currentColor;
+      border-radius: 1px;
+      content: "";
+      display: block;
+      height: 2px;
+    }
+    .icon-lines.align-left::before { width: 14px; }
+    .icon-lines.align-left span { width: 10px; }
+    .icon-lines.align-left::after { width: 13px; }
+    .icon-lines.align-center::before { justify-self: center; width: 12px; }
+    .icon-lines.align-center span { justify-self: center; width: 16px; }
+    .icon-lines.align-center::after { justify-self: center; width: 10px; }
+    .icon-lines.align-right::before { justify-self: end; width: 14px; }
+    .icon-lines.align-right span { justify-self: end; width: 10px; }
+    .icon-lines.align-right::after { justify-self: end; width: 13px; }
+    .row-icon {
+      display: inline-grid;
+      gap: 2px;
+      width: 17px;
+    }
+    .row-icon::before, .row-icon::after, .row-icon span {
+      border: 1px solid currentColor;
+      border-radius: 1px;
+      content: "";
+      display: block;
+      height: 4px;
+    }
+    .row-icon.add::after { background: currentColor; box-shadow: inset 0 0 0 1px var(--panel-sunken); }
+    .row-icon.remove span { opacity: .25; }
+    .row-icon.insert-above::before { background: currentColor; box-shadow: inset 0 0 0 1px var(--panel-sunken); }
+    .row-icon.height::before { height: 3px; }
+    .row-icon.height span { height: 6px; }
+    .row-icon.height::after { height: 3px; }
+    .row-icon.height.compact span { height: 3px; }
+    .row-icon.height.comfortable span { height: 8px; }
+    .row-icon.spacing { gap: 4px; }
+    .row-icon.underline::after { border-width: 0 0 2px; height: 0; }
+    .rows-ribbon-grid {
+      align-items: start;
+      display: grid;
+      gap: var(--sp-2);
+      grid-template-columns: 32px 66px 116px;
+    }
+    .row-insert-stack {
+      display: grid;
+      gap: 2px;
+      grid-template-columns: 1fr;
+    }
+    .row-command {
+      height: 25px;
+      min-width: 0;
+      padding: 0;
+      width: 32px;
+    }
+    .row-action-icon {
+      display: block;
+      height: 21px;
+      object-fit: contain;
+      width: 21px;
+    }
+    .row-underline-stack {
+      display: grid;
+      gap: 4px;
+      justify-items: center;
+    }
+    .row-underline-button {
+      height: 44px;
+      min-width: 0;
+      padding: 0;
+      width: 48px;
+    }
+    .underline-box {
+      border: 1px dotted currentColor;
+      display: block;
+      height: 22px;
+      position: relative;
+      width: 24px;
+    }
+    .underline-box::after {
+      background: currentColor;
+      bottom: 3px;
+      content: "";
+      display: block;
+      height: 2px;
+      left: 4px;
+      position: absolute;
+      right: 4px;
+    }
+    .underline-select {
+      min-width: 60px;
+      padding: 0 4px;
+      width: 60px;
+    }
+    .spacing-controls {
+      display: grid;
+      gap: 3px;
+    }
+    .spacing-row {
+      align-items: center;
+      display: grid;
+      gap: 4px;
+      grid-template-columns: 36px 46px 20px;
+    }
+    .spacing-row label {
+      color: var(--ink-2);
+      font-size: var(--fs-label);
+      font-weight: var(--fw-medium);
+    }
+    .spacing-input {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-btn-sm);
+      color: var(--ink);
+      font-size: var(--fs-sm);
+      height: 28px;
+      padding: 0 6px;
+      width: 46px;
+    }
+    .stepper {
+      display: grid;
+      gap: 2px;
+    }
+    .stepper button {
+      align-items: center;
+      background: var(--panel-sunken);
+      border: 0;
+      border-radius: 6px;
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      font-size: 10px;
+      height: 13px;
+      justify-content: center;
+      padding: 0;
+      width: 20px;
+    }
+    .spacing-icon {
+      align-items: center;
+      display: inline-grid;
+      gap: 2px;
+      grid-template-columns: 6px 16px;
+    }
+    .spacing-icon::before {
+      color: currentColor;
+      content: "↕";
+      font-size: 14px;
+      line-height: 1;
+    }
+    .spacing-icon::after {
+      background: repeating-linear-gradient(to bottom, currentColor 0 2px, transparent 2px 5px);
+      content: "";
+      display: block;
+      height: 14px;
+      width: 16px;
+    }
+    .token-select {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-btn-sm);
+      color: var(--ink);
+      font-size: var(--fs-sm);
+      height: 32px;
+      max-width: 180px;
+      padding: 0 8px;
+    }
+    .field-list {
+      height: 74px;
+      max-width: none;
+      min-width: 172px;
+      padding: 4px;
+    }
+    .field-list:disabled, .tool-btn:disabled {
+      color: var(--ink-4);
+      cursor: not-allowed;
+      opacity: .62;
+    }
+    .format-select { max-width: 128px; }
+    .preview-toolbar h3 { font-size: var(--fs-h3); margin: 0; }
+    .zoom { color: var(--ink-3); font-size: var(--fs-meta); font-weight: var(--fw-semibold); }
+    .document-workbench { align-items: start; display: grid; gap: var(--sp-4); grid-template-columns: minmax(0, 1fr) 320px; }
+    .preview-column { min-width: 0; }
+    .preview-column--sample { opacity: .96; }
+    .mode-label {
+      color: var(--ink-3);
+      font-size: var(--fs-label);
+      font-weight: var(--fw-bold);
+      letter-spacing: var(--ls-label);
+      margin: 0 0 var(--sp-2);
+      text-transform: uppercase;
+    }
+    .page-preview {
+      aspect-ratio: 8.5 / 11;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px -18px rgba(20,39,51,.35);
+      display: flex;
+      flex-direction: column;
+      min-height: 620px;
+      margin: 0 auto;
+      max-width: 680px;
+      padding: 32px 34px;
+      width: 100%;
+    }
+    .sample-page {
+      font-size: 5.6px;
+      min-height: auto;
+      max-width: 320px;
+      padding: 15px 16px;
+    }
+    .sample-page .doc-header, .sample-page .doc-footer { gap: 2.4px; }
+    .sample-page .doc-body { font-size: 5.6px; padding: 17px 0; }
+    .sample-page .doc-body h4 { font-size: 7px; margin-bottom: 5.6px; }
+    .sample-page .doc-line { height: 3.8px; margin: 5.2px 0; }
+    .sample-page .doc-row {
+      border-radius: 2px;
+      font-size: 5.2px;
+      line-height: 1.25;
+      min-height: 6.6px;
+      padding: .9px 1.4px;
+    }
+    .sample-page .doc-cell {
+      border: 0;
+      min-height: 6.6px;
+      padding: 0 .5px;
+    }
+    .doc-header, .doc-footer { display: grid; gap: 5px; }
+    .page-preview.spacing-tight .doc-header, .page-preview.spacing-tight .doc-footer { gap: 2px; }
+    .page-preview.spacing-loose .doc-header, .page-preview.spacing-loose .doc-footer { gap: 9px; }
+    .doc-rule { border-bottom: 1px solid var(--ink); margin-top: 8px; }
+    .doc-footer .doc-rule { border-bottom: 0; border-top: 1px solid var(--ink); margin: 0 0 8px; }
+    .doc-row {
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: var(--ink);
+      display: flex;
+      font-size: 11px;
+      line-height: 1.25;
+      min-height: 14px;
+      outline: none;
+      padding: 2px 3px;
+      white-space: pre-wrap;
+    }
+    .doc-row:hover { background: rgba(11,189,214,.06); border-color: rgba(11,189,214,.18); }
+    .doc-row.is-selected { background: var(--cyan-bg2); border-color: var(--cyan); }
+    .doc-row.row-deleting {
+      border-color: var(--rose);
+      opacity: .72;
+      position: relative;
+    }
+    .doc-row.row-deleting::after {
+      align-items: center;
+      background: var(--rose);
+      border-radius: 999px;
+      color: var(--panel);
+      content: "X";
+      display: inline-flex;
+      font-size: var(--fs-sm);
+      font-weight: var(--fw-bold);
+      height: 22px;
+      justify-content: center;
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      z-index: 2;
+    }
+    .doc-row:empty::before { color: var(--ink-4); content: attr(data-placeholder); }
+    .doc-row.left { justify-content: flex-start; text-align: left; }
+    .doc-row.center { justify-content: center; text-align: center; }
+    .doc-row.right { justify-content: flex-end; text-align: right; }
+    .doc-row.bold { font-weight: 700; }
+    .doc-row.italic { font-style: italic; }
+    .doc-row.split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+      gap: 8px;
+      justify-content: stretch;
+      text-align: initial;
+    }
+    .doc-cell {
+      border: 1px solid transparent;
+      border-radius: 3px;
+      min-height: 14px;
+      outline: none;
+      padding: 1px 2px;
+      white-space: pre-wrap;
+    }
+    .doc-cell:hover { border-color: rgba(11,189,214,.2); }
+    .doc-cell:empty::before { color: var(--ink-4); content: attr(data-placeholder); }
+    .doc-cell.left-cell { text-align: left; }
+    .doc-cell.center-cell { text-align: center; }
+    .doc-cell.right-cell { text-align: right; }
+    .doc-cell.bold { font-weight: 700; }
+    .doc-cell.italic { font-style: italic; }
+    .doc-cell.underline { text-decoration: underline; }
+    .font-arial { font-family: Arial, var(--font); }
+    .font-times { font-family: "Times New Roman", Times, serif; }
+    .font-georgia { font-family: Georgia, serif; }
+    .font-courier { font-family: "Courier New", var(--font-mono); }
+    .fs-9 { font-size: 9px; }
+    .fs-10 { font-size: 10px; }
+    .fs-11 { font-size: 11px; }
+    .fs-12 { font-size: 12px; }
+    .fs-14 { font-size: 14px; }
+    .row-before-0 { margin-top: 0; }
+    .row-before-3 { margin-top: 3px; }
+    .row-before-6 { margin-top: 6px; }
+    .row-before-9 { margin-top: 9px; }
+    .row-after-0 { margin-bottom: 0; }
+    .row-after-3 { margin-bottom: 3px; }
+    .row-after-6 { margin-bottom: 6px; }
+    .row-after-9 { margin-bottom: 9px; }
+    .row-underline-thin { border-bottom: 1px solid var(--ink); }
+    .row-underline-medium { border-bottom: 1.5px solid var(--ink); }
+    .row-underline-dark { border-bottom: 2px solid var(--ink); }
+    .sample-page .fs-9 { font-size: 4.24px; }
+    .sample-page .fs-10 { font-size: 4.71px; }
+    .sample-page .fs-11 { font-size: 5.18px; }
+    .sample-page .fs-12 { font-size: 5.65px; }
+    .sample-page .fs-14 { font-size: 6.59px; }
+    .sample-page .row-before-3 { margin-top: 1.41px; }
+    .sample-page .row-before-6 { margin-top: 2.82px; }
+    .sample-page .row-before-9 { margin-top: 4.24px; }
+    .sample-page .row-after-3 { margin-bottom: 1.41px; }
+    .sample-page .row-after-6 { margin-bottom: 2.82px; }
+    .sample-page .row-after-9 { margin-bottom: 4.24px; }
+    .sample-page .doc-row { pointer-events: none; }
+    .sample-page .doc-row:hover { background: transparent; border-color: transparent; }
+    .sample-page .doc-row.is-selected { background: transparent; border-color: transparent; }
+    .sample-page .doc-row:empty::before { content: ""; }
+    .sample-page .doc-cell:empty::before { content: ""; }
+    .placeholder-token {
+      background: var(--cyan-bg2);
+      border: 1px solid rgba(11,189,214,.35);
+      border-radius: 4px;
+      color: var(--cyan-dd);
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: .92em;
+      padding: 0 3px;
+    }
+    .doc-body {
+      color: var(--ink-2);
+      flex: 1;
+      font-size: 12px;
+      line-height: 1.55;
+      padding: 36px 0;
+    }
+    .doc-body h4 { color: var(--ink); font-size: 15px; margin: 0 0 12px; }
+    .doc-line { background: var(--line-2); border-radius: 2px; height: 8px; margin: 11px 0; }
+    .doc-line.short { width: 64%; }
+    .doc-line.medium { width: 82%; }
+    .page-count { color: var(--ink-3); font-size: 10px; text-align: center; }
+    .hidden { display: none !important; }
+    @media (max-width: 1100px) {
+      .app { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .editor-grid { grid-template-columns: 1fr; }
+      .preview-shell { position: static; }
+      .document-workbench { grid-template-columns: 1fr; }
+      .layout-settings { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .main { padding: var(--sp-4); }
+      .hero, .section-header { align-items: stretch; flex-direction: column; }
+      .actions { justify-content: flex-start; }
+      .card-grid, .filter-bar, .form-grid, .form-grid.three, .template-row { grid-template-columns: 1fr; }
+      .page-preview { height: 600px; padding: 28px 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">AA</div>
+        <div>
+          <div class="brand-name">Adaptify IPLM</div>
+          <div class="nav-label">Settings prototype</div>
+        </div>
+      </div>
+      <div class="nav-section">
+        <p class="nav-label">Administration</p>
+        <div class="nav-item">Dashboard</div>
+        <div class="nav-item active">System Administration</div>
+        <div class="nav-item">Product Vault</div>
+        <div class="nav-item">Filing Manager</div>
+      </div>
+      <div class="nav-section">
+        <p class="nav-label">Favorites</p>
+        <div class="nav-item">No favorites yet</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <section class="ds-page" id="settingsHub">
+        <div class="hero">
+          <div>
+            <h1>Settings</h1>
+            <p>Configure application settings, manage users, and control system behavior.</p>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-title">
+              <h2>Administration settings</h2>
+              <span class="count">7</span>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="card-grid">
+              <button class="nav-card" type="button">
+                <span class="tile">A</span>
+                <span><h3>Account Management</h3><p>Manage users, roles, and access for your organization.</p></span>
+                <span class="chev">&rsaquo;</span>
+              </button>
+              <button class="nav-card" type="button">
+                <span class="tile blue">L</span>
+                <span><h3>Lists</h3><p>Configure dropdown lists, lookup values, and reference data.</p></span>
+                <span class="chev">&rsaquo;</span>
+              </button>
+              <button class="nav-card" type="button">
+                <span class="tile violet">M</span>
+                <span><h3>Mapping Templates</h3><p>Build field and value mappings used to import loss runs and books of business.</p></span>
+                <span class="chev">&rsaquo;</span>
+              </button>
+              <button class="nav-card" type="button" data-go="library">
+                <span class="tile amber">D</span>
+                <span><h3>Document Templates</h3><p>Create reusable headers and footers for forms and rules documents.</p></span>
+                <span class="chev">&rsaquo;</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-page hidden" id="libraryPage">
+        <div class="breadcrumb"><span>Settings</span><span>&rsaquo;</span><span>Document Templates</span></div>
+        <div class="hero">
+          <div>
+            <h1>Document Templates</h1>
+            <p>Create and manage reusable header and footer layouts for forms and rules documents.</p>
+          </div>
+          <div class="actions">
+            <button class="btn soft small" type="button" data-go="hub">Back to Settings</button>
+            <button class="btn primary small" type="button" data-go="editor">New Template</button>
+          </div>
+        </div>
+
+        <div class="tabs" aria-label="Template type">
+          <button class="tab active" type="button" data-template-tab="Forms">Forms</button>
+          <button class="tab" type="button" data-template-tab="Rules">Rules</button>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-title">
+              <h2><span id="libraryTitle">Forms templates</span></h2>
+              <span class="count" id="libraryCount">3</span>
+            </div>
+            <div class="actions">
+              <button class="btn soft small" type="button">Import</button>
+              <button class="btn primary small" type="button" data-go="editor">New Template</button>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="filter-bar">
+              <div class="field">
+                <label for="templateSearch">Search templates</label>
+                <input class="control" id="templateSearch" value="" placeholder="Search by name or jurisdiction">
+              </div>
+              <div class="field">
+                <label for="templateStatus">Status</label>
+                <select class="control" id="templateStatus"><option>All statuses</option><option>Ready</option><option>Draft</option></select>
+              </div>
+              <div class="field">
+                <label for="templateUsage">Usage</label>
+                <select class="control" id="templateUsage"><option>All usage</option><option>Header and footer</option><option>Header only</option><option>Footer only</option></select>
+              </div>
+              <button class="btn soft" type="button">Reset</button>
+            </div>
+            <table aria-label="Document templates">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Underwriting companies</th>
+                  <th>Products</th>
+                  <th>Layout</th>
+                  <th>Status</th>
+                  <th>Updated</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="templateRows">
+                <tr>
+                  <td><strong>Homeowners form standard</strong><br>All states</td>
+                  <td>Form</td>
+                  <td>Adaptify Mutual</td>
+                  <td>Homeowners</td>
+                  <td>Header 3 rows, footer 2 rows</td>
+                  <td><span class="status ready">Ready</span></td>
+                  <td>2026-10-07</td>
+                  <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+                </tr>
+                <tr>
+                  <td><strong>Commercial auto filing pack</strong><br>California</td>
+                  <td>Form</td>
+                  <td>North River Specialty</td>
+                  <td>Commercial Auto</td>
+                  <td>Header 2 rows, footer 2 rows</td>
+                  <td><span class="status draft">Draft</span></td>
+                  <td>2026-10-05</td>
+                  <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+                </tr>
+                <tr>
+                  <td><strong>Workers comp endorsement</strong><br>Multi-state</td>
+                  <td>Form</td>
+                  <td>Adaptify Mutual</td>
+                  <td>Workers Compensation</td>
+                  <td>Header 3 rows, footer 1 row</td>
+                  <td><span class="status ready">Ready</span></td>
+                  <td>2026-10-01</td>
+                  <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-page hidden" id="editorPage">
+        <div class="breadcrumb"><span>Settings</span><span>&rsaquo;</span><span>Document Templates</span><span>&rsaquo;</span><span>Edit template</span></div>
+        <div class="hero">
+          <div>
+            <h1 id="editableTemplateTitle" contenteditable="true" spellcheck="false">Homeowners form standard</h1>
+            <p id="editableTemplateDescription" contenteditable="true">Configure flexible rows for the document header and footer, then preview the output before saving.</p>
+          </div>
+          <div class="actions">
+            <button class="btn soft small" type="button" data-go="library">Close</button>
+            <button class="btn soft small" type="button">Save Draft</button>
+            <button class="btn primary small" type="button">Save Template</button>
+          </div>
+        </div>
+
+        <div class="settings-drawer hidden" id="templateSettingsDrawer" aria-hidden="true">
+          <div class="details-panel" role="dialog" aria-modal="true" aria-labelledby="settingsDrawerTitle">
+            <div class="section-header">
+              <div class="section-title"><h2 id="settingsDrawerTitle">Settings</h2></div>
+              <button class="btn ghost small" type="button" id="settingsDrawerClose" aria-label="Close settings">&times;</button>
+            </div>
+            <div class="section-body">
+              <div class="settings-section">
+                <h3>Template</h3>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="templateName">Template name</label>
+                    <input class="control" id="templateName" value="Homeowners form standard">
+                  </div>
+                  <div class="field">
+                    <label for="templateDescription">Description</label>
+                    <textarea class="control" id="templateDescription" rows="3">Configure flexible rows for the document header and footer, then preview the output before saving.</textarea>
+                  </div>
+                  <div class="field">
+                    <label for="templateType">Template type</label>
+                    <select class="control" id="templateType">
+                      <option>Forms</option>
+                      <option>Rules</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="status">Status</label>
+                    <select class="control" id="status">
+                      <option>Ready</option>
+                      <option>Draft</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="jurisdiction">Jurisdiction</label>
+                    <select class="control" id="jurisdiction">
+                      <option>All states</option>
+                      <option>California</option>
+                      <option>New York</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3>Applicability</h3>
+                <p class="settings-section__note">Choose where this template is available.</p>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="underwritingCompany">Underwriting companies</label>
+                    <select class="control" id="underwritingCompany" multiple size="4">
+                      <option selected>Adaptify Mutual</option>
+                      <option>North River Specialty</option>
+                      <option>Summit Casualty</option>
+                      <option>Prairie Standard</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="products">Products</label>
+                    <select class="control" id="products" multiple size="4">
+                      <option selected>Homeowners</option>
+                      <option>Commercial Auto</option>
+                      <option>Workers Compensation</option>
+                      <option>General Liability</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3>Numbering</h3>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="formNumberFormat">Form number format</label>
+                    <select class="control" id="formNumberFormat">
+                      <option selected>Abbr ## ##</option>
+                      <option>Abbr-##-##</option>
+                      <option>Abbr ## ## State</option>
+                      <option>Custom text</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="editionFormat">Edition format</label>
+                    <select class="control" id="editionFormat">
+                      <option selected>MM YY</option>
+                      <option>MM/YY</option>
+                      <option>YYYY-MM</option>
+                      <option>Edition MM YY</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-section">
+                <h3>Header and footer</h3>
+              <div class="layout-settings">
+                <div class="layout-settings__group">
+                  <h4>Header settings</h4>
+                  <div class="form-grid three">
+                  <div class="field">
+                    <label for="headerHeight">Height</label>
+                    <select class="control" id="headerHeight">
+                      <option>Compact</option>
+                      <option selected>Standard</option>
+                      <option>Spacious</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="headerLine">Bottom line</label>
+                    <select class="control" id="headerLine">
+                      <option selected>Show</option>
+                      <option>Hide</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="headerTone">Line tone</label>
+                    <select class="control" id="headerTone">
+                      <option selected>Default</option>
+                      <option>Subtle</option>
+                      <option>Strong</option>
+                    </select>
+                  </div>
+                  </div>
+                </div>
+                <div class="layout-settings__group">
+                  <h4>Footer settings</h4>
+                  <div class="form-grid three">
+                  <div class="field">
+                    <label for="footerHeight">Height</label>
+                    <select class="control" id="footerHeight">
+                      <option selected>Compact</option>
+                      <option>Standard</option>
+                      <option>Spacious</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="footerLine">Top line</label>
+                    <select class="control" id="footerLine">
+                      <option selected>Show</option>
+                      <option>Hide</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="footerTone">Line tone</label>
+                    <select class="control" id="footerTone">
+                      <option selected>Default</option>
+                      <option>Subtle</option>
+                      <option>Strong</option>
+                    </select>
+                  </div>
+                  </div>
+                </div>
+              </div>
+              </div>
+            </div>
+            <div class="settings-drawer__footer">
+              <button class="btn soft small" type="button" id="settingsDrawerCancel">Close</button>
+              <button class="btn primary small" type="button" id="settingsDrawerDone">Done</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="editor-grid">
+          <aside class="preview-shell">
+            <div class="preview-toolbar">
+              <div>
+                <h3>Template layout and sample preview</h3>
+                <p class="hint">Place placeholders in the template, then compare against sample data.</p>
+              </div>
+              <div class="actions">
+                <span class="zoom">Letter &middot; A4</span>
+                <button class="btn soft small" type="button" id="templateDetailsToggle" aria-label="Settings"><span class="settings-icon">&#9881;</span></button>
+              </div>
+            </div>
+            <div class="format-ribbon" aria-label="Header and footer formatting">
+              <div class="ribbon-section">
+                <div class="ribbon-controls ribbon-controls--column">
+                  <button class="tool-btn active" type="button" data-region="header">Header</button>
+                  <button class="tool-btn" type="button" data-region="footer">Footer</button>
+                </div>
+                <span class="ribbon-label">Region</span>
+              </div>
+              <div class="ribbon-section">
+                <div class="ribbon-controls ribbon-controls--column">
+                  <select class="token-select field-list" id="tokenSelect" aria-label="Insert field" size="5" disabled>
+                    <option value="{{company.name}}">Underwriting company</option>
+                    <option value="{{product}}">Product</option>
+                    <option value="{{form.number}}">Form number</option>
+                    <option value="{{form.edition}}">Edition</option>
+                    <option value="{{form.number}}  {{form.edition}}">Form number + edition</option>
+                    <option value="{{document.title}}">Document title</option>
+                    <option value="{{jurisdiction}}">Jurisdiction</option>
+                    <option value="{{effective.date}}">Effective date</option>
+                    <option value="{{page.number}}">Page number</option>
+                    <option value="{{page.count}}">Page count</option>
+                  </select>
+                </div>
+                <span class="ribbon-label">Insert Field</span>
+              </div>
+              <div class="ribbon-section">
+                <div class="ribbon-controls">
+                  <div class="rows-ribbon-grid">
+                    <div class="row-insert-stack" aria-label="Row actions">
+                      <button class="tool-btn row-command" type="button" id="insertAboveRow" title="Add row to top"><img class="row-action-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAS4AAAE3CAYAAAAUmawQAAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAAFKAAAAAQAAAUoAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAS6gAwAEAAAAAQAAATcAAAAAXodWUQAAAAlwSFlzAAAywAAAMsABKGRa2wAADu9JREFUeAHt3MGLndUZB+B747TUFBtLE4hQtAuhQilo7arN4ga6EVwotNvif9HsqmRj63/htou6EFx0kRtIFi2Ki1JIIYvqogQUim1VaEan99oebew3c+6dnDnzvvc8A+HT7577nd953smPTGZ0NvNBgACBZALzZHnF3ULg4OBgscXynVs6n8+XO3coB/pMQHHt8CfCqriurY632OEj1o52WXnViHK+fiZnbKkJEBhZQHGNPH1nJ5BUQHElHZzYBEYWUFwjT9/ZCSQVUFxJByc2gZEFFNfI03d2AkkFFFfSwYlNYGSBvZEP7+yz2Y07H6VkuHTxbMrcQrcRUFxtHNM+5eW331uV14fp8r/+zHdmyivd2JoF9qViM0oPIkCgl4Di6iVtHwIEmgkormaUHkSAQC8BxdVL2j4ECDQTUFzNKD2IAIFeAoqrl7R9CBBoJqC4mlF6EAECvQQUVy9p+xAg0ExAcTWj9CACBHoJKK5e0vYhQKCZgOJqRulBBAj0ElBcvaTtQ4BAMwHF1YzSgwgQ6CWguHpJ24cAgWYCiqsZpQcRINBLQHH1krYPAQLNBBRXM0oPIkCgl4Di6iVtHwIEmgkormaUHkSAQC8BxdVL2j4ECDQTUFzNKD2IAIFeAoqrl7R9CBBoJqC4mlF6EAECvQQUVy9p+xAg0ExAcTWj9CACBHoJKK5e0vYhQKCZgOJqRulBBAj0ElBcvaTtQ4BAMwHF1YzSgwgQ6CWguHpJ24cAgWYCiqsZpQcRINBLYK/XRq33OTg4WLR+puftnMBi9Xmyc4dqeaD5fL5s+bxez/r/4vrt3xa9Nr/Pfa7d5/u9ffcFfrk64vqXj0MEfvPXu8uf/f6fLx3ycqzbz39zWQLdW1zr0prPFULRcSWw4wJ/+vsn69/ziwTHXK4yrn999uHvuIqEKwECaQQUV5pRCUqAQBFQXEXClQCBNAKKK82oBCVAoAgoriLhSoBAGoF7v6tYj72sL+m2YtFtJxsR2FGB733jgWWwoy02ybNNcS1nzz18eZOHdlmzwU8W3rjzUZcoNukvcOPOh/03TbbjpYtnq4l/+sje9dXv6xerC3ss+M+PYy022Wqb4trkeaHWPPvGX0LlEaadwMtvv7d62PqXj8MErjx1YXblyQuHvZz6vr/jSj0+4QmMKaC4xpy7UxNILaC4Uo9PeAJjCiiuMefu1ARSCyiu1OMTnsCYAoprzLk7NYHUAoor9fiEJzCmgOIac+5OTSC1gOJKPT7hCYwpoLjGnLtTE0gtoLhSj094AmMKKK4x5+7UBFILKK7U4xOewJgCimvMuTs1gdQCiiv1+IQnMKaA4hpz7k5NILWA4ko9PuEJjCmguMacu1MTSC2guFKPT3gCYwoorjHn7tQEUgvspU5fCX/p4tcrK7x8486HKRHMNuXYmoXe6eJ6/ZnHmkHt6oOefeOdWcbyuvLUhdmli2d3dSzOVRHwpWIFyMsECMQTUFzxZiIRAQIVAcVVAfIyAQLxBBRXvJlIRIBARUBxVYC8TIBAPAHFFW8mEhEgUBFQXBUgLxMgEE8g889xLeNxhku0CJeob6Bl3+3s1ksgbXHN5/PLvZCy7nNwcHBtlX2RNX+D3C+tPk+WDZ7jEcEEfKkYbCDiECBQF1BcdSMrCBAIJqC4gg1EHAIE6gKKq25kBQECwQQUV7CBiEOAQF1AcdWNrCBAIJiA4go2EHEIEKgLKK66kRUECAQTUFzBBiIOAQJ1AcVVN7KCAIFgAoor2EDEIUCgLqC46kZWECAQTEBxBRuIOAQI1AUUV93ICgIEggkormADEYcAgbqA4qobWUGAQDABxRVsIOIQIFAXUFx1IysIEAgmoLiCDUQcAgTqAoqrbmQFAQLBBBRXsIGIQ4BAXUBx1Y2sIEAgmIDiCjYQcQgQqAsorrqRFQQIBBNQXMEGIg4BAnUBxVU3soIAgWACiivYQMQhQKAuoLjqRlYQIBBMQHEFG4g4BAjUBRRX3cgKAgSCCSiuYAMRhwCBuoDiqhtZQYBAMAHFFWwg4hAgUBdQXHUjKwgQCCaguIINRBwCBOoCiqtuZAUBAsEEFFewgYhDgEBdQHHVjawgQCCYgOIKNhBxCBCoCyiuupEVBAgEE1BcwQYiDgECdQHFVTeyggCBYAKKK9hAxCFAoC6guOpGVhAgEExAcQUbiDgECNQFFFfdyAoCBIIJKK5gAxGHAIG6wF59iRW7LHDpkbO7fDxn21EBxbWjg930WFeevDCbPbnpausIxBDwpWKMOUhBgMAWAvf8ievM715dPPCDn0y+/cy/Pp499MLVxeSLbhIIKPDr15aL8y9cDZhMpCmBj279YXH3wrenXpqt++eTx3+42L/95nK9YF5W7a1u7p371rWHvv/jcss1ucBrv/j57EdPPJb8FMeP//yvXp3dvPXO8R/gnWEE9j94f/aPP95c7t9+6/I6lC8Vw4xGEAIENhVQXJtKWUeAQBgBxRVmFIIQILCpgOLaVMo6AgTCCNzzXcUwqQRpInDzz/5iugmkh4QTUFz/M5L1dy4O+9g7d/6wl8Lef+W167NXTjjdrpmdMJfHNxLYuLj+++3IRtvmesy6tPY/uJkr9CmnZXbKA0i4/fpzZtMfx/J3XAkHLDKB0QUU1+ifAc5PIKGA4ko4NJEJjC6guEb/DHB+AgkFFFfCoYlMYHQBxTX6Z4DzE0gosPGPQxx1ttV/sf35/2XiqHWRX1v/3zFms4Nrx8m4C+c/zrnvx2y13+f/pf9x9o70nr3Hn15/3iymMj346BOzj9+9NfXS+t7OGBx2wKn7R3lNrZ+6509cUyruESAQWkBxhR6PcAQITAkorikV9wgQCC2guEKPRzgCBKYEFNeUinsECIQWUFyhxyMcAQJTAoprSsU9AgRCCyiu0OMRjgCBKQHFNaXiHgECoQUUV+jxCEeAwJSA4ppScY8AgdACiiv0eIQjQGBKQHFNqbhHgEBoAcUVejzCESAwJaC4plTcI0AgtIDiCj0e4QgQmBJQXFMq7hEgEFpAcYUej3AECEwJKK4pFfcIEAgtoLhCj0c4AgSmBBTXlIp7BAiEFlBcoccjHAECUwKKa0rFPQIEQgsortDjEY4AgSkBxTWl4h4BAqEFFFfo8QhHgMCUgOKaUnGPAIHQAoor9HiEI0BgSkBxTam4R4BAaAHFFXo8whEgMCWguKZU3CNAILSA4go9HuEIEJgSUFxTKu4RIBBaQHGFHo9wBAhMCSiuKRX3CBAILaC4Qo9HOAIEpgT2pm5ue2/v8aevbfueeOsPjh1pN85/nOMf32y122KH3BaH6d394P3DXlrf3yWDo8755dcWX76x7b83Ka7VpvcdZNvgwdaPfv7jjmPn3faPLq61284brA/Z+sOXiq1FPY8AgRMXUFwnTmwDAgRaCyiu1qKeR4DAiQsorhMntgEBAq0FFFdrUc8jQODEBTb+ruLeufOzBx994sQDndYG629bH/UdoF0++3HNmR1XzvvuV2Dj4lr/pv743Vv3u1/K96/PflSppTzUCYdmdsLAO/j49R+Ovjb77kYn86XiRkwWESAQSUBxRZqGLAQIbCSguDZisogAgUgCiivSNGQhQGAjAcW1EZNFBAhEErjnu4rzr3x1uQq3WP067GN52AvuEyBA4H4EVv2zfvvi8GfMr5fXPi+u/dtvLh++dHV1/2DyjXvnLiz3b791ubzRlQABAi0FHr703OLo/nnzxbKfLxWLhCsBAmkEFFeaUQlKgEARUFxFwpUAgTQCiivNqAQlQKAIKK4i4UqAQBoBxZVmVIISIFAEFFeRcCVAII2A4kozKkEJECgCiqtIuBIgkEZAcaUZlaAECBQBxVUkXAkQSCOguNKMSlACBIqA4ioSrgQIpBFQXGlGJSgBAkVAcRUJVwIE0ggorjSjEpQAgSKguIqEKwECaQQUV5pRCUqAQBFQXEXClQCBNAKKK82oBCVAoAgoriLhSoBAGgHFlWZUghIgUAQUV5FwJUAgjYDiSjMqQQkQKAKKq0i4EiCQRkBxpRmVoAQIFAHFVSRcCRBII6C40oxKUAIEioDiKhKuBAikEVBcaUYlKAECRUBxFQlXAgTSCCiuNKMSlACBIqC4ioQrAQJpBBRXmlEJSoBAEVBcRcKVAIE0AoorzagEJUCgCCiuIuFKgEAaAcWVZlSCEiBQBBRXkXAlQCCNgOJKMypBCRAoAoqrSLgSIJBGQHGlGZWgBAgUAcVVJFwJEEgjoLjSjEpQAgSKgOIqEq4ECKQRUFxpRiUoAQJFQHEVCVcCBNIIKK40oxKUAIEioLiKhCsBAmkEFFeaUQlKgEARUFxFwpUAgTQCiivNqAQlQKAIKK4i4UqAQBoBxZVmVIISIFAEFFeRcCVAII2A4kozKkEJECgCiqtIuBIgkEZAcaUZlaAECBQBxVUkXAkQSCOwt03S8y9cXWyz3loCBAhsKnBm9uniYDbfaPkWxXWwWD1ysdFTLSJAgMCWApuW1vqxvlTcEtdyAgROX0Bxnf4MJCBAYEsBxbUlmOUECJy+gOI6/RlIQIDAlgKKa0swywkQOH2Bie8qzpenH0sCAgQIfCEwn316/Yt/808ECBBIKPBvnArwftG2jVMAAAAASUVORK5CYII=" alt=""></button>
+                      <button class="tool-btn row-command danger" type="button" id="removePreviewRow" title="Delete row"><img class="row-action-icon" src="data:image/png;base64,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" alt=""></button>
+                      <button class="tool-btn row-command" type="button" id="insertBelowRow" title="Add row to bottom"><img class="row-action-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAS4AAAE8CAYAAAB+XlzTAAAAAXNSR0IArs4c6QAAAIRlWElmTU0AKgAAAAgABQESAAMAAAABAAEAAAEaAAUAAAABAAAASgEbAAUAAAABAAAAUgEoAAMAAAABAAIAAIdpAAQAAAABAAAAWgAAAAAAAAFKAAAAAQAAAUoAAAABAAOgAQADAAAAAQABAACgAgAEAAAAAQAAAS6gAwAEAAAAAQAAATwAAAAAKVdnQAAAAAlwSFlzAAAywAAAMsABKGRa2wAADtdJREFUeAHt3E+rnGcZB+B35FS0pdbSBCqV6qLQUChUKgg24GTfhf0C0n4Ku5G0dCP0S/gNWlddZirRleDChS5cVEEImNIWaREaGGeieTknyXvOM/8yz33f14HQ95x5Zt77vn6HX08yIcPggwABAgQIECBAgAABAgQInBGYnfns1CeX3nxvfupTlwQIEDiawO3f/Gpx+uaTxXX5zfduDMNyfvqwawIECBxDYDnMrp0ur28cYwj3JECAwC4CimsXPc8lQOAoAorrKOxuSoDALgKKaxc9zyVA4CgCiuso7G5KgMAuAifbPXm22O55nkWAAIEpgfa/xbBVcS2H4d3Tb01OjeHrBAgQaBXY5K9g+a1iq6pzBAh0I6C4uonCIAQItAoorlYp5wgQ6EZAcXUThUEIEGgVUFytUs4RINCNgOLqJgqDECDQKqC4WqWcI0CgGwHF1U0UBiFAoFVAcbVKOUeAQDcCiqubKAxCgECrgOJqlXKOAIFuBBRXN1EYhACBVgHF1SrlHAEC3Qgorm6iMAgBAq0CiqtVyjkCBLoRUFzdRGEQAgRaBRRXq5RzBAh0I6C4uonCIAQItAoorlYp5wgQ6EZAcXUThUEIEGgVUFytUs4RINCNgOLqJgqDECDQKqC4WqWcI0CgGwHF1U0UBiFAoFVAcbVKOUeAQDcCiqubKAxCgECrgOJqlXKOAIFuBBRXN1EYhACBVgHF1SrlHAEC3Qgorm6iMAgBAq0CiqtVyjkCBLoRUFzdRGEQAgRaBRRXq5RzBAh0I6C4uonCIAQItAoorlYp5wgQ6EZAcXUThUEIEGgVUFytUs4RINCNgOLqJgqDECDQKqC4WqWcI0CgGwHF1U0UBiFAoFVAcbVKOUeAQDcCiqubKAxCgECrgOJqlXKOAIFuBE7un+TkhR/P7//a/Z//5x9/ma/O3f9lnxMgQOAgAuvOWb3w4t6Lz+5d3PvvyQuv3lhdz598+bXh5KlL97585r///vPvhztf3D7zNZ8QIEBgF4GLO+fTa3f+9sfF+h5+q7iLtOcSIHAUAcV1FHY3JUBgFwHFtYue5xIgcBQBxXUUdjclQGAXAcW1i57nEiBwFIEH/jpEyxSPTbzb2PLc3s+c927p1Lusve90yPl4HVLXa08J+IlrSuYhX89c2A9Zd+cv8dqZ0AtMCGz1E9fXq7/Ddd7/aSfuleLLVffeNjxe28pVfN6LzUv7iauZykECBHoRUFy9JGEOAgSaBRRXM5WDBAj0IqC4eknCHAQINAsormYqBwkQ6EVgq3cVJ4ZfDMPs3YnHAn15eX017HyLgRc59t908629Vje6+/2ycgv9MR+GuwYPLHHv7/1Nv7OaYv8H9r7gC5NeFzzvzMP7LK7h3j85ceYOwT5Z/bM+6+La6iPD/psuvovX6l6L6Gb//3fptv2eCb//5t8vd/8dv229xtv5reJI4YIAgSgCiitKUuYkQGAUUFwjhQsCBKIIKK4oSZmTAIFRQHGNFC4IEIgioLiiJGVOAgRGAcU1UrggQCCKgOKKkpQ5CRAYBRTXSOGCAIEoAoorSlLmJEBgFFBcI4ULAgSiCCiuKEmZkwCBUUBxjRQuCBCIIqC4oiRlTgIERgHFNVK4IEAgioDiipKUOQkQGAUU10jhggCBKAKKK0pS5iRAYBRQXCOFCwIEoggorihJmZMAgVFAcY0ULggQiCKguKIkZU4CBEYBxTVSuCBAIIqA4oqSlDkJEBgFFNdI4YIAgSgCiitKUuYkQGAUUFwjhQsCBKIIKK4oSZmTAIFRQHGNFC4IEIgioLiiJGVOAgRGAcU1UrggQCCKgOKKkpQ5CRAYBRTXSOGCAIEoAoorSlLmJEBgFFBcI4ULAgSiCCiuKEmZkwCBUeBkvNr9Yn7ywqs3dn+Zo7/CfMsJsuy/6frbeq3us7y++p65vukN+zq/nBznzhe3Jx/73wMZ9r9gxQcenvZ64Og5X9hnca1vMz/nXhUeqr7/phlX96q+/6bfL+N5v1UcKVwQIBBFQHFFScqcBAiMAoprpHBBgEAUAcUVJSlzEiAwCiiukcIFAQJRBLZ6V/Hbz7+42m/9K9/HnS8+Hb6eeBv75Klnhidffi3U0j+98sODzrt+y3/qbf9vPX9lGH7y6kHvf96L/+Gvn5z3sMc6Ezh56lLzRFsV1yY3aJ6kk4Pr3b6VpJRfu/KD4YNf/qIT2Uc/xvu//d3w/ocfP/obu+PBBfxW8eDEbkCAwL4FFNe+Rb0eAQIHF1BcByd2AwIE9i2guPYt6vUIEDi4gOI6OLEbECCwb4GHvKs4W70Nsxy+vvT9+XLi7cnHbv9zse9BvN7+BZ75zhPrF53v/5VjvOKV5y4vhmEWY1hTrjrnufkUw+yxby5OPzad6oef31gdnJ8+PF4vl9eGN55ejJ+76FJguVzOV4Otc6z68e5sNnun6vLh9t6gcx7yE1e4dQ28o8DNW1/t+AqP/ulXn3380d/UHbsRUFzdRHGcQdal9fpHnxzn5jvc9e0fXR7efuXyDq/gqZEF/OF85PTMTqCogOIqGry1CUQWUFyR0zM7gaICiqto8NYmEFlAcUVOz+wEigoorqLBW5tAZAHFFTk9sxMoKqC4igZvbQKRBRRX5PTMTqCogOIqGry1CUQWUFyR0zM7gaICiqto8NYmEFlAcUVOz+wEigoorqLBW5tAZAHFFTk9sxMoKqC4igZvbQKRBRRX5PTMTqCogOIqGry1CUQWUFyR0zM7gaICiqto8NYmEFlAcUVOz+wEigoorqLBW5tAZAHFFTk9sxMoKqC4igZvbQKRBRRX5PTMTqCogOIqGry1CUQWUFyR0zM7gaICiqto8NYmEFlAcUVOz+wEigoorqLBW5tAZAHFFTk9sxMoKqC4igZvbQKRBRRX5PTMTqCogOIqGry1CUQWUFyR0zM7gaICiqto8NYmEFlAcUVOz+wEigoorqLBW5tAZAHFFTk9sxMoKqC4igZvbQKRBU4iD79cLm+s5p9H3sHsBxW4vvoeuX7QOwR/8dnqI+IKfuKKmJqZCRQXUFzFvwGsTyCigOKKmJqZCRQXUFzFvwGsTyCigOKKmJqZCRQXUFzFvwGsTyCigOKKmJqZCRQXUFzFvwGsTyCiQOi/gNoC/vpHfx9u3vqy5agzgQR+/ad/DetfPqYFPn/rpekHgz/iJ67gARqfQEUBxVUxdTsTCC6guIIHaHwCFQUUV8XU7UwguIDiCh6g8QlUFFBcFVO3M4HgAooreIDGJ1BRQHFVTN3OBIILKK7gARqfQEUBxVUxdTsTCC6guIIHaHwCFQUUV8XU7UwguIDiCh6g8QlUFFBcFVO3M4HgAooreIDGJ1BRQHFVTN3OBIILKK7gARqfQEUBxVUxdTsTCC6guIIHaHwCFQUUV8XU7UwguIDiCh6g8QlUFFBcFVO3M4HgAooreIDGJ1BRQHFVTN3OBIILKK7gARqfQEUBxVUxdTsTCC6guIIHaHwCFQUUV8XU7UwguIDiCh6g8QlUFFBcFVO3M4HgAooreIDGJ1BRQHFVTN3OBIILKK7gARqfQEUBxVUxdTsTCC6guIIHaHwCFQUUV8XU7UwguMBJ8PkvHP/q9x6/8Ez1AzdvfRmO4OqzT4Sb2cD7E9i2uObDB5/tb4oDvtLbr1wehlcOeIPgL33z1lfD6x8FLK7V/5DuZhvc/+jjf/DZ/OgzbDHAdsU1m11f3Wv966gfi9t3hvml7VY46uBuTqAXgdnsRi+jbDKHP+PaRMtZAgS6EFBcXcRgCAIENhFQXJtoOUuAQBcCiquLGAxBgMAmAoprEy1nCRDoQkBxdRGDIQgQ2ERAcW2i5SwBAl0IKK4uYjAEAQKbCCiuTbScJUCgCwHF1UUMhiBAYBMBxbWJlrMECBAgQIAAAQIECBAgQIAAAQIECBAgQGAPAv8F5DvhcJdiNdwAAAAASUVORK5CYII=" alt=""></button>
+                    </div>
+                    <div class="row-underline-stack" aria-label="Row underline">
+                      <button class="tool-btn row-underline-button" type="button" id="rowUnderlineButton" title="Apply row underline"><span class="underline-box"></span></button>
+                      <select class="token-select underline-select" id="rowUnderlineSelect" aria-label="Underline weight">
+                        <option value="">None</option>
+                        <option value="thin">0.5 pt</option>
+                        <option value="medium">1 pt</option>
+                        <option value="dark">1.5 pt</option>
+                      </select>
+                    </div>
+                    <div class="spacing-controls" aria-label="Row spacing">
+                      <div class="spacing-row">
+                        <label for="rowSpacingBefore">Before</label>
+                        <input class="spacing-input" id="rowSpacingBefore" list="spacingValues" value="0">
+                        <span class="stepper"><button type="button" data-step-target="rowSpacingBefore" data-step="3">▲</button><button type="button" data-step-target="rowSpacingBefore" data-step="-3">▼</button></span>
+                      </div>
+                      <div class="spacing-row">
+                        <label for="rowSpacingAfter">After</label>
+                        <input class="spacing-input" id="rowSpacingAfter" list="spacingValues" value="3">
+                        <span class="stepper"><button type="button" data-step-target="rowSpacingAfter" data-step="3">▲</button><button type="button" data-step-target="rowSpacingAfter" data-step="-3">▼</button></span>
+                      </div>
+                    </div>
+                  </div>
+                  <datalist id="spacingValues">
+                    <option value="0"></option>
+                    <option value="3"></option>
+                    <option value="6"></option>
+                    <option value="9"></option>
+                  </datalist>
+                </div>
+                <span class="ribbon-label">Rows</span>
+              </div>
+              <div class="ribbon-section">
+                <div class="ribbon-controls">
+                  <select class="token-select format-select" id="fontSelect" aria-label="Font">
+                    <option value="font-arial" selected>Arial</option>
+                    <option value="font-times">Times</option>
+                    <option value="font-georgia">Georgia</option>
+                    <option value="font-courier">Courier</option>
+                  </select>
+                  <select class="token-select format-select" id="fontSizeSelect" aria-label="Font size">
+                    <option value="fs-9">9 px</option>
+                    <option value="fs-10">10 px</option>
+                    <option value="fs-11" selected>11 px</option>
+                    <option value="fs-12">12 px</option>
+                    <option value="fs-14">14 px</option>
+                  </select>
+                  <button class="tool-btn" type="button" data-style="bold" title="Bold">B</button>
+                  <button class="tool-btn" type="button" data-style="italic" title="Italic"><em>I</em></button>
+                  <button class="tool-btn" type="button" data-style="underline" title="Underline"><u>U</u></button>
+                </div>
+                <span class="ribbon-label">Font</span>
+              </div>
+              <div class="ribbon-section" aria-label="Paragraph">
+                <div class="ribbon-controls">
+                  <button class="tool-btn" type="button" data-align="left" title="Align left"><span class="icon-lines align-left"><span></span></span></button>
+                  <button class="tool-btn" type="button" data-align="center" title="Align center"><span class="icon-lines align-center"><span></span></span></button>
+                  <button class="tool-btn" type="button" data-align="right" title="Align right"><span class="icon-lines align-right"><span></span></span></button>
+                  <select class="token-select format-select" id="lineSpacingSelect" aria-label="Line spacing" title="Line spacing">
+                    <option value="tight">Tight</option>
+                    <option value="normal" selected>Normal</option>
+                    <option value="loose">Loose</option>
+                  </select>
+                </div>
+                <span class="ribbon-label">Paragraph</span>
+              </div>
+            </div>
+            <div class="document-workbench">
+              <div class="preview-column preview-column--sample">
+                <p class="mode-label">Template layout</p>
+                <div class="page-preview spacing-normal" id="templatePage" aria-label="Template layout editor">
+                  <div class="doc-header" id="previewHeader">
+                    <div class="doc-row split" data-region="header" data-placeholder="Header row">
+                      <span class="doc-cell left-cell" contenteditable="true" data-placeholder="Left">{{form.number}}</span>
+                      <span class="doc-cell center-cell" contenteditable="true" data-placeholder="Center">{{document.title}}</span>
+                      <span class="doc-cell right-cell" contenteditable="true" data-placeholder="Right">Ed. {{form.edition}}</span>
+                    </div>
+                    <div class="doc-row split" data-region="header" data-placeholder="Header row">
+                      <span class="doc-cell left-cell" contenteditable="true" data-placeholder="Left"></span>
+                      <span class="doc-cell center-cell bold" contenteditable="true" data-placeholder="Center">{{company.name}}</span>
+                      <span class="doc-cell right-cell" contenteditable="true" data-placeholder="Right"></span>
+                    </div>
+                    <div class="doc-row split" data-region="header" data-placeholder="Header row">
+                      <span class="doc-cell left-cell" contenteditable="true" data-placeholder="Left">{{product}}</span>
+                      <span class="doc-cell center-cell" contenteditable="true" data-placeholder="Center"></span>
+                      <span class="doc-cell right-cell" contenteditable="true" data-placeholder="Right">{{jurisdiction}}</span>
+                    </div>
+                    <div class="doc-rule" data-line="header"></div>
+                  </div>
+                  <div class="doc-body">
+                    <h4 id="previewTitle">Homeowners form standard</h4>
+                    <p>Template body sample area. Header and footer placeholders stay editable here.</p>
+                    <div class="doc-line"></div>
+                    <div class="doc-line medium"></div>
+                    <div class="doc-line"></div>
+                    <div class="doc-line short"></div>
+                    <div class="doc-line medium"></div>
+                    <div class="doc-line"></div>
+                  </div>
+                  <div class="doc-footer" id="previewFooter">
+                    <div class="doc-rule" data-line="footer"></div>
+                    <div class="doc-row split" data-region="footer" data-placeholder="Footer row">
+                      <span class="doc-cell left-cell" contenteditable="true" data-placeholder="Left">Confidential</span>
+                      <span class="doc-cell center-cell" contenteditable="true" data-placeholder="Center"></span>
+                      <span class="doc-cell right-cell" contenteditable="true" data-placeholder="Right">Page {{page.number}} of {{page.count}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="preview-column">
+                <p class="mode-label">Sample preview</p>
+                <div class="page-preview sample-page spacing-normal" id="samplePage" aria-label="Sample data preview">
+                  <div class="doc-header" id="sampleHeader"></div>
+                  <div class="doc-body">
+                    <h4 id="sampleTitle">Homeowners form standard</h4>
+                    <p>Sample data preview for a generated form or rules document.</p>
+                    <div class="doc-line"></div>
+                    <div class="doc-line medium"></div>
+                    <div class="doc-line"></div>
+                    <div class="doc-line short"></div>
+                    <div class="doc-line medium"></div>
+                    <div class="doc-line"></div>
+                  </div>
+                  <div class="doc-footer" id="sampleFooter"></div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const pages = {
+      hub: document.getElementById('settingsHub'),
+      library: document.getElementById('libraryPage'),
+      editor: document.getElementById('editorPage')
+    };
+
+    function showPage(name) {
+      Object.values(pages).forEach(page => page.classList.add('hidden'));
+      pages[name].classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('[data-go]').forEach(button => {
+      button.addEventListener('click', () => showPage(button.dataset.go));
+    });
+
+    const settingsDrawer = document.getElementById('templateSettingsDrawer');
+    function openSettingsDrawer() {
+      settingsDrawer.classList.remove('hidden');
+      settingsDrawer.setAttribute('aria-hidden', 'false');
+    }
+    function closeSettingsDrawer() {
+      settingsDrawer.classList.add('hidden');
+      settingsDrawer.setAttribute('aria-hidden', 'true');
+    }
+    document.getElementById('templateDetailsToggle').addEventListener('click', openSettingsDrawer);
+    document.getElementById('settingsDrawerClose').addEventListener('click', closeSettingsDrawer);
+    document.getElementById('settingsDrawerCancel').addEventListener('click', closeSettingsDrawer);
+    document.getElementById('settingsDrawerDone').addEventListener('click', closeSettingsDrawer);
+    settingsDrawer.addEventListener('click', event => {
+      if (event.target === settingsDrawer) closeSettingsDrawer();
+    });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') closeSettingsDrawer();
+    });
+
+    const formRowsMarkup = `
+      <tr>
+        <td><strong>Homeowners form standard</strong><br>All states</td>
+        <td>Form</td>
+        <td>Adaptify Mutual</td>
+        <td>Homeowners</td>
+        <td>Header 3 rows, footer 2 rows</td>
+        <td><span class="status ready">Ready</span></td>
+        <td>2026-10-07</td>
+        <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+      </tr>
+      <tr>
+        <td><strong>Commercial auto filing pack</strong><br>California</td>
+        <td>Form</td>
+        <td>North River Specialty</td>
+        <td>Commercial Auto</td>
+        <td>Header 2 rows, footer 2 rows</td>
+        <td><span class="status draft">Draft</span></td>
+        <td>2026-10-05</td>
+        <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+      </tr>
+      <tr>
+        <td><strong>Workers comp endorsement</strong><br>Multi-state</td>
+        <td>Form</td>
+        <td>Adaptify Mutual</td>
+        <td>Workers Compensation</td>
+        <td>Header 3 rows, footer 1 row</td>
+        <td><span class="status ready">Ready</span></td>
+        <td>2026-10-01</td>
+        <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+      </tr>`;
+
+    function wirePageButtons(scope = document) {
+      scope.querySelectorAll('[data-go]').forEach(button => {
+        button.addEventListener('click', () => showPage(button.dataset.go));
+      });
+    }
+
+    const tooltipTextById = {
+      templateSearch: 'Search document templates by name or jurisdiction.',
+      templateStatus: 'Filter templates by readiness status.',
+      templateUsage: 'Filter templates by header and footer usage.',
+      settingsDrawerClose: 'Close template settings.',
+      settingsDrawerCancel: 'Close template settings without leaving the editor.',
+      settingsDrawerDone: 'Apply settings and close this panel.',
+      templateDetailsToggle: 'Open template settings.',
+      templateName: 'Edit the template name.',
+      templateDescription: 'Describe when this template should be used.',
+      templateType: 'Choose whether this template is for forms or rules.',
+      status: 'Set this template to draft or ready.',
+      jurisdiction: 'Choose the jurisdiction or filing scope.',
+      underwritingCompany: 'Select the underwriting companies this template applies to.',
+      products: 'Select the products this template applies to.',
+      formNumberFormat: 'Choose how form number and edition appear.',
+      editionFormat: 'Choose how edition dates appear.',
+      headerHeight: 'Set the header height.',
+      headerLine: 'Show or hide the header divider line.',
+      headerTone: 'Choose the strength of the header divider line.',
+      footerHeight: 'Set the footer height.',
+      footerLine: 'Show or hide the footer divider line.',
+      footerTone: 'Choose the strength of the footer divider line.',
+      tokenSelect: 'Choose a placeholder field to insert into the selected cell.',
+      insertAboveRow: 'Add a row above the selected row.',
+      removePreviewRow: 'Delete the selected row.',
+      insertBelowRow: 'Add a row below the selected row.',
+      rowUnderlineButton: 'Toggle underline on the selected row.',
+      rowUnderlineSelect: 'Choose the underline thickness for the selected row.',
+      rowSpacingBefore: 'Set spacing before the selected row. Use 0, 3, 6, 9, or type a value.',
+      rowSpacingAfter: 'Set spacing after the selected row. Use 0, 3, 6, 9, or type a value.',
+      fontSelect: 'Choose the font for the selected cell or row.',
+      fontSizeSelect: 'Choose the font size for the selected cell or row.',
+      lineSpacingSelect: 'Choose page-level header and footer line spacing.'
+    };
+
+    const tooltipByAction = {
+      hub: 'Return to the settings hub.',
+      library: 'Open the document templates library.',
+      editor: 'Open the template editor.'
+    };
+
+    function readableText(element) {
+      return element.textContent.replace(/\s+/g, ' ').trim();
+    }
+
+    function tooltipForElement(element) {
+      if (element.id && tooltipTextById[element.id]) return tooltipTextById[element.id];
+      if (element.dataset.go && tooltipByAction[element.dataset.go]) return tooltipByAction[element.dataset.go];
+      if (element.dataset.templateTab) return `Show ${element.dataset.templateTab.toLowerCase()} templates.`;
+      if (element.dataset.region) return `Edit the ${element.dataset.region}.`;
+      if (element.dataset.style) return `${element.dataset.style[0].toUpperCase()}${element.dataset.style.slice(1)} the selected text or row.`;
+      if (element.dataset.align) return `Align selected cell ${element.dataset.align}.`;
+      if (element.dataset.stepTarget) {
+        const direction = Number(element.dataset.step) > 0 ? 'Increase' : 'Decrease';
+        const field = element.dataset.stepTarget === 'rowSpacingBefore' ? 'before spacing' : 'after spacing';
+        return `${direction} row ${field}.`;
+      }
+      if (element.getAttribute('aria-label')) return element.getAttribute('aria-label');
+      if (element.getAttribute('title')) return element.getAttribute('title');
+      if (element.placeholder) return element.placeholder;
+      if (element.matches('[contenteditable="true"]')) return 'Click to edit this text.';
+      const text = readableText(element);
+      return text ? text : '';
+    }
+
+    const tooltip = document.createElement('div');
+    tooltip.className = 'gesture-tooltip';
+    tooltip.setAttribute('role', 'tooltip');
+    document.body.appendChild(tooltip);
+
+    function placeTooltip(element) {
+      const rect = element.getBoundingClientRect();
+      tooltip.style.left = `${rect.left + rect.width / 2}px`;
+      tooltip.style.top = `${Math.max(8, rect.top - 8)}px`;
+    }
+
+    function showTooltip(element) {
+      const text = element.dataset.tooltip;
+      if (!text) return;
+      tooltip.textContent = text;
+      placeTooltip(element);
+      tooltip.classList.add('visible');
+    }
+
+    function hideTooltip() {
+      tooltip.classList.remove('visible');
+    }
+
+    function initTooltips(scope = document) {
+      scope.querySelectorAll('button, select, input, textarea, [contenteditable="true"]').forEach(element => {
+        const text = tooltipForElement(element);
+        if (!text) return;
+        element.dataset.tooltip = text;
+        element.setAttribute('title', text);
+        if (element.dataset.tooltipReady) return;
+        element.dataset.tooltipReady = 'true';
+        element.addEventListener('mouseenter', () => showTooltip(element));
+        element.addEventListener('focus', () => showTooltip(element));
+        element.addEventListener('mousemove', () => placeTooltip(element));
+        element.addEventListener('mouseleave', hideTooltip);
+        element.addEventListener('blur', hideTooltip);
+      });
+    }
+
+    document.querySelectorAll('[data-template-tab]').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('[data-template-tab]').forEach(item => item.classList.remove('active'));
+        tab.classList.add('active');
+        const type = tab.dataset.templateTab;
+        document.getElementById('libraryTitle').textContent = `${type} templates`;
+        document.getElementById('libraryCount').textContent = type === 'Forms' ? '3' : '2';
+        const rows = document.getElementById('templateRows');
+        if (type === 'Rules') {
+          rows.innerHTML = `
+            <tr>
+              <td><strong>Rule manual standard</strong><br>All states</td>
+              <td>Rule</td>
+              <td>Adaptify Mutual</td>
+              <td>All commercial lines</td>
+              <td>Header 3 rows, footer 2 rows</td>
+              <td><span class="status ready">Ready</span></td>
+              <td>2026-10-06</td>
+              <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+            </tr>
+            <tr>
+              <td><strong>State exception rules</strong><br>California</td>
+              <td>Rule</td>
+              <td>North River Specialty</td>
+              <td>General Liability</td>
+              <td>Header 2 rows, footer 2 rows</td>
+              <td><span class="status draft">Draft</span></td>
+              <td>2026-10-02</td>
+              <td><div class="row-actions"><button class="link-btn" type="button" data-go="editor">Edit</button><button class="link-btn" type="button">Preview</button></div></td>
+            </tr>`;
+          wirePageButtons(rows);
+          initTooltips(rows);
+        } else {
+          rows.innerHTML = formRowsMarkup;
+          wirePageButtons(rows);
+          initTooltips(rows);
+        }
+      });
+    });
+
+    let activeRegion = 'header';
+    let selectedRow = document.querySelector('#previewHeader .doc-row');
+    let selectedCell = null;
+
+    function selectedCompanies() {
+      const select = document.getElementById('underwritingCompany');
+      const values = Array.from(select.selectedOptions).map(option => option.value);
+      return values.length ? values.join(', ') : 'Adaptify Mutual';
+    }
+
+    function selectedProducts() {
+      const select = document.getElementById('products');
+      const values = Array.from(select.selectedOptions).map(option => option.value);
+      return values.length ? values.join(', ') : 'Homeowners';
+    }
+
+    function sampleFormNumber() {
+      const format = document.getElementById('formNumberFormat').value;
+      if (format === 'Abbr-##-##') return 'HO-03-04';
+      if (format === 'Abbr ## ## State') return 'HO 03 04 CA';
+      if (format === 'Custom text') return 'HO CUSTOM 01';
+      return 'HO 03 04';
+    }
+
+    function sampleEdition() {
+      const format = document.getElementById('editionFormat').value;
+      if (format === 'MM/YY') return '01/25';
+      if (format === 'YYYY-MM') return '2025-01';
+      if (format === 'Edition MM YY') return 'Edition 01 25';
+      return '01 25';
+    }
+
+    function resolveSampleText(value) {
+      return value
+        .replaceAll('{{company.name}}', selectedCompanies())
+        .replaceAll('{{product}}', selectedProducts())
+        .replaceAll('{{lob}}', selectedProducts())
+        .replaceAll('{{form.number}}', sampleFormNumber())
+        .replaceAll('{{form.edition}}', sampleEdition())
+        .replaceAll('{{document.title}}', document.getElementById('editableTemplateTitle').textContent.trim() || 'Document template')
+        .replaceAll('{{jurisdiction}}', document.getElementById('jurisdiction').value)
+        .replaceAll('{{effective.date}}', '01/01/2027')
+        .replaceAll('{{page.number}}', '1')
+        .replaceAll('{{page.count}}', '8');
+    }
+
+    function cloneRowsForSample(sourceSelector, targetId) {
+      const target = document.getElementById(targetId);
+      target.innerHTML = '';
+      document.querySelectorAll(sourceSelector).forEach(item => {
+        if (item.classList.contains('doc-rule')) {
+          const line = document.createElement('div');
+          line.className = item.className;
+          line.dataset.line = item.dataset.line;
+          target.appendChild(line);
+          return;
+        }
+        const row = item.cloneNode(true);
+        row.removeAttribute('contenteditable');
+        row.classList.remove('is-selected');
+        row.querySelectorAll('[contenteditable]').forEach(cell => {
+          cell.removeAttribute('contenteditable');
+          cell.dataset.placeholder = '';
+          const sourceText = cell.textContent.trim();
+          cell.textContent = sourceText ? resolveSampleText(sourceText) : '';
+        });
+        if (!item.classList.contains('split')) {
+          row.textContent = resolveSampleText(item.textContent);
+        }
+        row.dataset.placeholder = '';
+        target.appendChild(row);
+      });
+    }
+
+    function syncDocumentWorkbench() {
+      const title = document.getElementById('editableTemplateTitle').textContent.trim() || 'Document template';
+      document.getElementById('templateName').value = title;
+      document.getElementById('previewTitle').textContent = title;
+      document.getElementById('sampleTitle').textContent = title;
+      cloneRowsForSample('#previewHeader > .doc-row, #previewHeader > .doc-rule', 'sampleHeader');
+      cloneRowsForSample('#previewFooter > .doc-rule, #previewFooter > .doc-row', 'sampleFooter');
+      applyLineVisibility();
+    }
+
+    function updateRibbonAvailability() {
+      const hasPlace = Boolean(selectedCell);
+      document.getElementById('tokenSelect').disabled = !hasPlace;
+    }
+
+    function setSelectedRow(row) {
+      if (!row) return;
+      document.querySelectorAll('.doc-row').forEach(item => item.classList.remove('is-selected'));
+      selectedRow = row;
+      if (!selectedCell || !row.contains(selectedCell)) selectedCell = null;
+      activeRegion = row.dataset.region;
+      row.classList.add('is-selected');
+      document.querySelectorAll('.tool-btn[data-region]').forEach(button => {
+        button.classList.toggle('active', button.dataset.region === activeRegion);
+      });
+      document.querySelectorAll('[data-align]').forEach(button => {
+        const target = selectedCell || row;
+        button.classList.toggle('active', target.classList.contains(`${button.dataset.align}-cell`));
+      });
+      const target = selectedCell || row;
+      document.querySelector('[data-style="bold"]').classList.toggle('active', target.classList.contains('bold'));
+      document.querySelector('[data-style="italic"]').classList.toggle('active', target.classList.contains('italic'));
+      document.querySelector('[data-style="underline"]').classList.toggle('active', target.classList.contains('underline'));
+      document.getElementById('fontSelect').value = ['font-arial','font-times','font-georgia','font-courier'].find(name => target.classList.contains(name)) || 'font-arial';
+      document.getElementById('fontSizeSelect').value = ['fs-9','fs-10','fs-11','fs-12','fs-14'].find(name => target.classList.contains(name)) || 'fs-11';
+      document.getElementById('rowSpacingBefore').value = ['0','3','6','9'].find(value => row.classList.contains(`row-before-${value}`)) || 0;
+      document.getElementById('rowSpacingAfter').value = ['0','3','6','9'].find(value => row.classList.contains(`row-after-${value}`)) || 3;
+      document.getElementById('rowUnderlineSelect').value = row.classList.contains('row-underline-dark') ? 'dark' : row.classList.contains('row-underline-medium') ? 'medium' : row.classList.contains('row-underline-thin') ? 'thin' : '';
+      updateRibbonAvailability();
+    }
+
+    function makeEditableRow(region) {
+      const row = document.createElement('div');
+      row.className = 'doc-row split';
+      row.dataset.region = region;
+      row.dataset.placeholder = region === 'header' ? 'Header row' : 'Footer row';
+      row.innerHTML = `
+        <span class="doc-cell left-cell" contenteditable="true" data-placeholder="Left"></span>
+        <span class="doc-cell center-cell" contenteditable="true" data-placeholder="Center"></span>
+        <span class="doc-cell right-cell" contenteditable="true" data-placeholder="Right"></span>`;
+      row.addEventListener('click', () => setSelectedRow(row));
+      row.querySelectorAll('.doc-cell').forEach(cell => {
+        cell.addEventListener('focus', () => {
+          selectedCell = cell;
+          setSelectedRow(row);
+        });
+        cell.addEventListener('click', () => {
+          selectedCell = cell;
+          setSelectedRow(row);
+        });
+        cell.addEventListener('input', syncDocumentWorkbench);
+      });
+      initTooltips(row);
+      return row;
+    }
+
+    function applyLineVisibility() {
+      document.querySelectorAll('[data-line="header"]').forEach(line => line.classList.toggle('hidden', document.getElementById('headerLine').value === 'Hide'));
+      document.querySelectorAll('[data-line="footer"]').forEach(line => line.classList.toggle('hidden', document.getElementById('footerLine').value === 'Hide'));
+    }
+
+    document.querySelectorAll('.doc-row').forEach(row => {
+      row.addEventListener('focus', () => setSelectedRow(row));
+      row.addEventListener('click', () => setSelectedRow(row));
+      row.addEventListener('input', syncDocumentWorkbench);
+    });
+
+    document.querySelectorAll('.doc-cell').forEach(cell => {
+      cell.addEventListener('focus', () => {
+        selectedCell = cell;
+        setSelectedRow(cell.closest('.doc-row'));
+      });
+      cell.addEventListener('click', () => {
+        selectedCell = cell;
+        setSelectedRow(cell.closest('.doc-row'));
+      });
+      cell.addEventListener('input', syncDocumentWorkbench);
+    });
+
+    document.querySelectorAll('.tool-btn[data-region]').forEach(button => {
+      button.addEventListener('click', () => {
+        activeRegion = button.dataset.region;
+        const firstRow = document.querySelector(`.doc-row[data-region="${activeRegion}"]`);
+        selectedCell = firstRow?.querySelector('.doc-cell') || null;
+        setSelectedRow(firstRow);
+      });
+    });
+
+    document.querySelectorAll('[data-align]').forEach(button => {
+      button.addEventListener('click', () => {
+        if (!selectedCell) return;
+        selectedCell.classList.remove('left-cell', 'center-cell', 'right-cell');
+        selectedCell.classList.add(`${button.dataset.align}-cell`);
+        setSelectedRow(selectedRow);
+        syncDocumentWorkbench();
+      });
+    });
+
+    document.querySelectorAll('[data-style]').forEach(button => {
+      button.addEventListener('click', () => {
+        const target = selectedCell || selectedRow;
+        if (!target) return;
+        target.classList.toggle(button.dataset.style);
+        setSelectedRow(selectedRow);
+        syncDocumentWorkbench();
+      });
+    });
+
+    document.getElementById('fontSelect').addEventListener('change', event => {
+      const target = selectedCell || selectedRow;
+      if (!target) return;
+      target.classList.remove('font-arial', 'font-times', 'font-georgia', 'font-courier');
+      target.classList.add(event.target.value);
+      syncDocumentWorkbench();
+    });
+
+    document.getElementById('fontSizeSelect').addEventListener('change', event => {
+      const target = selectedCell || selectedRow;
+      if (!target) return;
+      target.classList.remove('fs-9', 'fs-10', 'fs-11', 'fs-12', 'fs-14');
+      target.classList.add(event.target.value);
+      syncDocumentWorkbench();
+    });
+
+    document.getElementById('lineSpacingSelect').addEventListener('change', event => {
+      document.getElementById('templatePage').classList.remove('spacing-tight', 'spacing-normal', 'spacing-loose');
+      document.getElementById('samplePage').classList.remove('spacing-tight', 'spacing-normal', 'spacing-loose');
+      document.getElementById('templatePage').classList.add(`spacing-${event.target.value}`);
+      document.getElementById('samplePage').classList.add(`spacing-${event.target.value}`);
+    });
+
+    document.getElementById('tokenSelect').addEventListener('change', event => {
+      if (!selectedCell || !event.target.value) return;
+      const target = selectedCell;
+      target.focus();
+      document.execCommand('insertText', false, event.target.value);
+      event.target.selectedIndex = -1;
+      syncDocumentWorkbench();
+    });
+
+    document.getElementById('insertBelowRow').addEventListener('click', () => {
+      const container = document.getElementById(activeRegion === 'header' ? 'previewHeader' : 'previewFooter');
+      const row = makeEditableRow(activeRegion);
+      if (selectedRow && selectedRow.dataset.region === activeRegion) {
+        selectedRow.after(row);
+      } else if (activeRegion === 'header') {
+        container.insertBefore(row, container.querySelector('[data-line="header"]'));
+      } else {
+        container.appendChild(row);
+      }
+      setSelectedRow(row);
+      selectedCell = row.querySelector('.doc-cell');
+      selectedCell.focus();
+      syncDocumentWorkbench();
+    });
+
+    document.getElementById('insertAboveRow').addEventListener('click', () => {
+      if (!selectedRow) return;
+      const row = makeEditableRow(selectedRow.dataset.region);
+      selectedRow.parentElement.insertBefore(row, selectedRow);
+      setSelectedRow(row);
+      selectedCell = row.querySelector('.doc-cell');
+      selectedCell.focus();
+      syncDocumentWorkbench();
+    });
+
+    function applyRowSpacing() {
+      if (!selectedRow) return;
+      const before = Math.max(0, Number.parseFloat(document.getElementById('rowSpacingBefore').value) || 0);
+      const after = Math.max(0, Number.parseFloat(document.getElementById('rowSpacingAfter').value) || 0);
+      const beforeClass = [0,3,6,9].reduce((best, value) => Math.abs(value - before) < Math.abs(best - before) ? value : best, 0);
+      const afterClass = [0,3,6,9].reduce((best, value) => Math.abs(value - after) < Math.abs(best - after) ? value : best, 0);
+      document.getElementById('rowSpacingBefore').value = beforeClass;
+      document.getElementById('rowSpacingAfter').value = afterClass;
+      selectedRow.classList.remove('row-before-0', 'row-before-3', 'row-before-6', 'row-before-9', 'row-after-0', 'row-after-3', 'row-after-6', 'row-after-9');
+      selectedRow.classList.add(`row-before-${beforeClass}`, `row-after-${afterClass}`);
+      syncDocumentWorkbench();
+    }
+
+    document.getElementById('rowSpacingBefore').addEventListener('input', applyRowSpacing);
+    document.getElementById('rowSpacingAfter').addEventListener('input', applyRowSpacing);
+    document.querySelectorAll('[data-step-target]').forEach(button => {
+      button.addEventListener('click', () => {
+        const input = document.getElementById(button.dataset.stepTarget);
+        input.value = Math.max(0, (Number.parseFloat(input.value) || 0) + Number.parseFloat(button.dataset.step));
+        applyRowSpacing();
+      });
+    });
+
+    document.getElementById('rowUnderlineSelect').addEventListener('change', event => {
+      if (!selectedRow) return;
+      const value = event.target.value;
+      selectedRow.classList.remove('row-underline-thin', 'row-underline-medium', 'row-underline-dark');
+      if (value) selectedRow.classList.add(`row-underline-${value}`);
+      syncDocumentWorkbench();
+    });
+
+    document.getElementById('rowUnderlineButton').addEventListener('click', () => {
+      if (!selectedRow) return;
+      const underlineSelect = document.getElementById('rowUnderlineSelect');
+      const currentValue = underlineSelect.value;
+      const nextValue = currentValue || 'thin';
+      const shouldClear = Boolean(currentValue) && selectedRow.classList.contains(`row-underline-${currentValue}`);
+      selectedRow.classList.remove('row-underline-thin', 'row-underline-medium', 'row-underline-dark');
+      underlineSelect.value = shouldClear ? '' : nextValue;
+      if (!shouldClear) selectedRow.classList.add(`row-underline-${nextValue}`);
+      syncDocumentWorkbench();
+    });
+
+    document.getElementById('removePreviewRow').addEventListener('click', () => {
+      if (!selectedRow) return;
+      const regionRows = document.querySelectorAll(`.doc-row[data-region="${selectedRow.dataset.region}"]`);
+      if (regionRows.length <= 1) return;
+      const nextRow = selectedRow.previousElementSibling?.classList.contains('doc-row')
+        ? selectedRow.previousElementSibling
+        : selectedRow.nextElementSibling?.classList.contains('doc-row')
+          ? selectedRow.nextElementSibling
+          : regionRows[0];
+      const rowToRemove = selectedRow;
+      rowToRemove.classList.add('row-deleting');
+      setTimeout(() => {
+        rowToRemove.remove();
+        setSelectedRow(nextRow);
+        syncDocumentWorkbench();
+      }, 180);
+    });
+
+    document.querySelectorAll('.control').forEach(control => {
+      control.addEventListener('input', () => {
+        if (control.id !== 'templateName' && control.id !== 'templateDescription') syncDocumentWorkbench();
+      });
+      control.addEventListener('change', () => {
+        applyLineVisibility();
+        if (control.id !== 'templateName' && control.id !== 'templateDescription') syncDocumentWorkbench();
+      });
+    });
+
+    document.getElementById('editableTemplateTitle').addEventListener('input', syncDocumentWorkbench);
+    document.getElementById('editableTemplateDescription').addEventListener('input', () => {
+      document.getElementById('templateDescription').value = document.getElementById('editableTemplateDescription').textContent.trim();
+    });
+    document.getElementById('templateName').addEventListener('input', event => {
+      document.getElementById('editableTemplateTitle').textContent = event.target.value || 'Document template';
+      syncDocumentWorkbench();
+    });
+    document.getElementById('templateDescription').addEventListener('input', event => {
+      document.getElementById('editableTemplateDescription').textContent = event.target.value;
+    });
+
+    selectedCell = selectedRow.querySelector('.doc-cell');
+    setSelectedRow(selectedRow);
+    applyLineVisibility();
+    initTooltips();
+    syncDocumentWorkbench();
+  </script>
+</body>
+</html>
